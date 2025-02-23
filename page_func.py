@@ -181,13 +181,13 @@ def book(driver, start_time_list, end_time_list, delta_day_list, venue, venue_nu
             EC.visibility_of_element_located((By.CLASS_NAME, "loading.ivu-spin.ivu-spin-large.ivu-spin-fix")))
         driver.find_element(By.XPATH,
                             f'/html/body/div[1]/div/div/div[3]/div[2]/div/div[1]/div[2]/div[1]/div[2]/div[{delta_day + 1}]').click()
-        time.sleep(0.2)
+        # time.sleep(0.2)
 
     def next_page():
         # 如果第一页没有，就往后翻，直到不存在下一页
         WebDriverWait(driver, 10).until_not(
             EC.visibility_of_element_located((By.CLASS_NAME, "loading.ivu-spin.ivu-spin-large.ivu-spin-fix")))
-        time.sleep(0.1)
+        # time.sleep(0.1)
         driver.find_element(By.XPATH,
                             '//*[@id="scrollTable"]/table/tbody/tr[last()]/td[last()]/div/i').click()
 
@@ -203,7 +203,8 @@ def book(driver, start_time_list, end_time_list, delta_day_list, venue, venue_nu
         return 0, 0
 
     def click_free(venue_num_click, time_num):
-        time.sleep(1)
+        WebDriverWait(driver, 5).until_not(
+            EC.visibility_of_element_located((By.CLASS_NAME, "loading.ivu-spin.ivu-spin-large.ivu-spin-fix")))
         trs = driver.find_elements(By.TAG_NAME, 'tr')
         trs = (driver.find_elements(By.TAG_NAME, 'tbody'))
         trs = trs[1].find_elements(By.TAG_NAME, 'tr')
@@ -239,7 +240,6 @@ def book(driver, start_time_list, end_time_list, delta_day_list, venue, venue_nu
         return False, venue_num_click
 
     driver.switch_to.window(driver.window_handles[-1])
-    time.sleep(1)
     WebDriverWait(driver, 10).until_not(
         EC.visibility_of_element_located((By.CLASS_NAME, "loading.ivu-spin.ivu-spin-large.ivu-spin-fix")))
     # 若接近但是没到12点，停留在此页面
@@ -325,7 +325,6 @@ def click_submit_order(driver):
 def verify(driver, username, pass_word, soft_id):
     print("进入安全验证")
     log_str = "进入安全验证\n"
-    time.sleep(1)
     # 创建ActionChains对象
     actions = ActionChains(driver)
     target_element = driver.find_element(By.XPATH,
@@ -357,7 +356,6 @@ def verify(driver, username, pass_word, soft_id):
                 # print(words_loc[j][0], int(words_loc[j][1]), int(words_loc[j][2]))
                 actions.move_to_element_with_offset(target_element, int(words_loc[j][1]) - 160,
                                                     int(words_loc[j][2]) - 72).click().perform()
-                time.sleep(0.3)
     print("安全验证成功")
     log_str += "安全验证成功\n"
     return log_str
